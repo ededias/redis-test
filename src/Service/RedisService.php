@@ -2,16 +2,8 @@
 
 namespace App\Service;
 
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
-
-// use Symfony\Component\Cache\Adapter\RedisAdapter;
-
-
-// $cache = new RedisAdapter(
-//     \Redis $redisConnection,
-// );
 
 class RedisService 
 {
@@ -20,7 +12,7 @@ class RedisService
         private CacheInterface $cache
         ) {}
 
-    public function save(array $payload, String $key): ?String 
+    public function save(array $payload, String $key) 
     {
         try {
             $this->cache->get($key, function (ItemInterface $item) use ($payload) {
@@ -28,7 +20,7 @@ class RedisService
                 return $payload;
             });
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return null;
         }    
     }
 
@@ -39,7 +31,7 @@ class RedisService
                 return null;
             });
         } catch (\Exception $e) {  
-            return $e->getMessage();
+            return null;
         } 
     }
 }
