@@ -17,21 +17,24 @@ class ZipcodeController extends AbstractController
         private RedisService $redisService // service do redis 
         ) {}
 
-    #[Route('/zipcode/{code}')]
+    #[Route('/zipcode/{code}', name: 'zipcode')]
     public function getZipcode($code): JsonResponse
     {
         try {
 
             $response = $this->service->loadZipCode($code);
+            
+            if (isset($response['erro'])) return $this->json(['message' => 'CEP não encontrado']);
             // busca dados do CEP para verificar se o dado esta armazenado anteriormente
             $responseRedis = $this->redisService->get('zipcode');
             // valida para verificar se o valor já existe
             if (!$responseRedis) {
-                // caso não exista salva no redis
-                $this->redisService->save($response, 'zipcode');
+               $response = $this->redisService->save($response, 'zipcode');
             }
+            $responseRedis = $this->redisService->get('zipcode');
+            
             // retorna a requisição
-            return $this->json([$response], 200);
+            return $this->json([$responseRedis], 200);
         } catch (\Exception $th) {
             return $this->json([], 200);
         }

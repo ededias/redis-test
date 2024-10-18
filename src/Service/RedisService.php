@@ -9,27 +9,31 @@ class RedisService
 {
 
     public function __construct(
-        private CacheInterface $cache
+        private CacheInterface $cachePool
         ) {}
 
-    public function save(array $payload, String $key) 
+    public function save(array $payload, String $key): ?String 
     {
         try {
-            $this->cache->get($key, function (ItemInterface $item) use ($payload) {
-                $item->expiresAfter(86400);
+            
+            $value = $this->cachePool->get($key, function () use ($payload) {
                 return $payload;
             });
+            return $value;
         } catch (\Exception $e) {
+            
             return null;
         }    
     }
 
-    public function get(String $key): ?array
+    public function get(String $key): ?string
     {
         try {
-            return $this->cache->get($key, function (ItemInterface $item) {
-                return null;
+            return $this->cachePool->get($key, function (ItemInterface $item) {
+                // Caso não exista no cache, você pode gerar o objeto aqui
+                return null; // Ou gere um objeto novo
             });
+            return $value;
         } catch (\Exception $e) {  
             return null;
         } 

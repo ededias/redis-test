@@ -21,8 +21,8 @@ class ViaCEPService
 
             return $content;
 
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (\Exception $e) {
+            return null;
         }
     }
 }
