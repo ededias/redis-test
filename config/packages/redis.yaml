@@ -1,0 +1,20 @@
+snc_redis:
+    clients:
+        default:
+            type: predis  # Ou 'phpredis' se estiver usando a extensão PHP nativa
+            alias: default
+            dsn: redis://redis:6379
+    # session:
+    #     client: default
+    #     prefix: session
+    # doctrine:
+    #     metadata_cache:
+    #         client: default
+    #         entity_manager: default
+    #         document_manager: default
+    #     result_cache:
+    #         client: default
+    #         entity_manager: [default]
+    #     query_cache:
+    #         client: default
+    #         entity_manager: default

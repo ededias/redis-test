@@ -22,19 +22,25 @@ class ZipcodeController extends AbstractController
     {
         try {
 
-            $response = $this->service->loadZipCode($code);
+            $address = $this->service->loadZipCode($code);
             
-            if (isset($response['erro'])) return $this->json(['message' => 'CEP não encontrado']);
+            if (isset($address['erro'])) return $this->json(['message' => 'CEP não encontrado']);
             // busca dados do CEP para verificar se o dado esta armazenado anteriormente
-            $responseRedis = $this->redisService->get('zipcode');
+            $response = $this->redisService->get('zipcode');
+            dump($response);
             // valida para verificar se o valor já existe
-            if (!$responseRedis) {
-               $response = $this->redisService->save($response, 'zipcode');
+            if (!$response) {
+               $response = $this->redisService->save($address, 'zipcode');
+               
             }
-            $responseRedis = $this->redisService->get('zipcode');
+            
+            if (!$response) {
+                $response = $this->redisService->get('zipcode');
+            }
+            
             
             // retorna a requisição
-            return $this->json([$responseRedis], 200);
+            return $this->json([$response], 200);
         } catch (\Exception $th) {
             return $this->json([], 200);
         }

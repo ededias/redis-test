@@ -22,7 +22,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    # App\Service\RedisService:
-    #     arguments:
-    #         $cachePool: '@my_redis_pool'
-    #         $redisUrl: '%env(REDIS_URL)%'
+    App\Service\RedisService:
+        arguments:
+            $cachePool: '@my_redis_pool'
+           
