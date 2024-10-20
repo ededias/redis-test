@@ -1,7 +1,4 @@
 services:
-  app:
-    environment:
-      REDIS_URL: redis://redis:6379
   redis:
     image: redis
     container_name: redis
