@@ -27,7 +27,7 @@ class ZipcodeController extends AbstractController
             if (isset($address['erro'])) return $this->json(['message' => 'CEP não encontrado']);
             // busca dados do CEP para verificar se o dado esta armazenado anteriormente
             $response = $this->redisService->get('zipcode');
-            dump($response);
+            
             // valida para verificar se o valor já existe
             if (!$response) {
                $response = $this->redisService->save($address, 'zipcode');
